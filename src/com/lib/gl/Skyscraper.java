@@ -19,19 +19,17 @@ public class Skyscraper {
 	}
 	
 	public List<Integer> getDesignDetails() {
+		// Initialize scanner object to read user input.
 		Scanner sc = new Scanner(System.in);
-		
+		// Accept total number of floors.
 		System.out.println("Input total number of floors in the building.");
 		int floorCnt = sc.nextInt();
-		
+		//Accept sizes of floors produced in factory in the same order of production days.
 		List<Integer> floorSizes = new ArrayList<Integer>();
 		System.out.println("Input sizes of floors in the order of days of construction.");
 		for(int i =1; i<= floorCnt; i++) {
 			System.out.println(String.format("Floor size ready on day %d: ", i));
 			floorSizes.add(sc.nextInt());
-		}
-		for(int j =0; j< floorCnt; j++) {
-			System.out.println(floorSizes.get(j));
 		}
 		return floorSizes;
 	}
@@ -40,37 +38,37 @@ public class Skyscraper {
 		int totalFloors = floorSizes.size();
 		int maxSize = totalFloors;
 		int sizeToAssemble = maxSize;
+		//Create stack to hold the slabs which are ready to assemble
 		Stack<Integer> readyFloors = new Stack<Integer>();
+		System.out.println("The order of construction is as follows");
+		//Iterate for day by day construction progress. Order ready slabs in stack.
 		for(int day = 1; day <= totalFloors; day++) {
-			int readySize = floorSizes.remove(0);
+			int readySize = floorSizes.remove(0).intValue();
 			readyFloors.push(readySize);
-//			System.out.println(readyFloors);
 			readyFloors = sortstack(readyFloors);
-//			System.out.println(readyFloors);
-			String floorsAssembled = "";
 			//get floors that can be assembled
-			System.out.println(readyFloors);
-			System.out.println(readyFloors.peek());
+			String floorsAssembled = "";
 			while(!readyFloors.isEmpty() && sizeToAssemble == readyFloors.peek().intValue()) {
-				floorsAssembled = floorsAssembled + readyFloors.pop();
+				floorsAssembled = floorsAssembled + " " + readyFloors.pop();
 				sizeToAssemble--;
 			}
 			System.out.println(String.format("Day %d: \n %s", day, floorsAssembled));
 		}
-		
-		
 	}
 	
 	public static Stack<Integer> sortstack(Stack<Integer> input){
+		//Create a new empty stack
 		Stack<Integer> tmpStack = new Stack<Integer>();
 		while(!input.isEmpty()){
+			// get top value from the stack to be sorted
 			int tmp = input.pop();
-			while(!tmpStack.isEmpty() && tmpStack.peek() < tmp){
+			//pop values from temporary stack till the temp value is less.
+			while(!tmpStack.isEmpty() && tmpStack.peek() > tmp){
 				input.push(tmpStack.pop());
 			}
+			//push value from temp to new stack.
 			tmpStack.push(tmp);
 		}
 		return tmpStack;
 	}
-	
 }
