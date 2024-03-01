@@ -1,9 +1,10 @@
-package com.lib.gl;
+package com.lib.gl.skyscraper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
+
 
 /**
  * a) Every day a floor is constructed in a separate factory of distinct size.
@@ -11,12 +12,6 @@ b) The floor with the larger size must be placed at the bottom of the building.
 c) The floor with the smaller size must be placed at the top of the building.
  */
 public class Skyscraper {
-
-	public static void main(String[] args) {
-		Skyscraper obj = new Skyscraper();
-		List floorSizes = obj.getDesignDetails();
-		obj.assembleBuilding(floorSizes);
-	}
 	
 	public List<Integer> getDesignDetails() {
 		// Initialize scanner object to read user input.
@@ -35,6 +30,7 @@ public class Skyscraper {
 	}
 	
 	public void assembleBuilding(List<Integer> floorSizes) {
+		Utils utils = new Utils();
 		int totalFloors = floorSizes.size();
 		int maxSize = totalFloors;
 		int sizeToAssemble = maxSize;
@@ -45,7 +41,7 @@ public class Skyscraper {
 		for(int day = 1; day <= totalFloors; day++) {
 			int readySize = floorSizes.remove(0).intValue();
 			readyFloors.push(readySize);
-			readyFloors = sortstack(readyFloors);
+			readyFloors = utils.sortstack(readyFloors);
 			//get floors that can be assembled
 			String floorsAssembled = "";
 			while(!readyFloors.isEmpty() && sizeToAssemble == readyFloors.peek().intValue()) {
@@ -56,19 +52,4 @@ public class Skyscraper {
 		}
 	}
 	
-	public static Stack<Integer> sortstack(Stack<Integer> input){
-		//Create a new empty stack
-		Stack<Integer> tmpStack = new Stack<Integer>();
-		while(!input.isEmpty()){
-			// get top value from the stack to be sorted
-			int tmp = input.pop();
-			//pop values from temporary stack till the temp value is less.
-			while(!tmpStack.isEmpty() && tmpStack.peek() > tmp){
-				input.push(tmpStack.pop());
-			}
-			//push value from temp to new stack.
-			tmpStack.push(tmp);
-		}
-		return tmpStack;
-	}
 }
